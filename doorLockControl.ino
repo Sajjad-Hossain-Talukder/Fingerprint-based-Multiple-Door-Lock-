@@ -14,6 +14,8 @@
 #define LCD_D7 A5
 
 
+
+
 #if (defined(__AVR__) || defined(ESP8266)) && !defined(__AVR_ATmega2560__)
 SoftwareSerial mySerial(18, 19);
 #else
@@ -64,6 +66,7 @@ Keypad keypad = Keypad(makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_N
 bool cellState[] = {false, false, false, false, false};
 int servoMode[] = { 0,  0,  0, 0, 0};
 int servoPin[] = {53, 51, 49, 47, 45};
+const int ledPins[] = {31,32,33,34,35};
 
 
 
@@ -74,11 +77,10 @@ void setup() {
  lcd.clear();
 
 
-
-
  for (int i = 0; i < 5; i += 1) {
-   cellServo[i].attach(servoPin[i]);
-   cellServo[i].write(servoMode[i]);
+    cellServo[i].attach(servoPin[i]);
+    cellServo[i].write(servoMode[i]);
+    pinMode(ledPins[i], OUTPUT);
  }
 
 
@@ -196,6 +198,7 @@ void loop() {
     servoMode[cellNumber] = 90;
      cellServo[cellNumber].write(servoMode[cellNumber]);
      cellState[cellNumber] = true;
+     digitalWrite(ledPins[cellNumber], HIGH);
      
 
 
@@ -205,6 +208,7 @@ void loop() {
      lcd.print("Cell #");
      lcd.print(cellNumber+1);
      lcd.print(" Locked");
+
      delay(2000);
    } else {
      lcd.clear();
@@ -223,6 +227,7 @@ void loop() {
      if (getFingerprintID(finger)) {
        servoMode[cellNumber] = 0;
        cellServo[cellNumber].write(servoMode[cellNumber]);
+       digitalWrite(ledPins[cellNumber], LOW);
        cellState[cellNumber] = false;
 
        lcd.clear();
