@@ -82,6 +82,7 @@ void setup() {
 
  for (int i = 0; i < 5; i += 1) {
   cellServo[i].attach(servoPin[i]);
+   pinMode(ledPins[i], OUTPUT);
   
   boolean state;
   EEPROM.get(i,state);
