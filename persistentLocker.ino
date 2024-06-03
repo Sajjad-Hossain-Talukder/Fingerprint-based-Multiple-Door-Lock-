@@ -99,9 +99,7 @@ void setup() {
       cellServo[i].write(0);
     }
   }
-   
-   pinMode(ledPins[i], OUTPUT); // Set LED pins as outputs
-   cellServo[i].write(servoMode[i]);
+
  }
 
 
